@@ -39,7 +39,15 @@ int replace_target(FILE *file, char *old_target, char *new_target)
 
         if (strchr(buffer, '\n') != NULL)
         {
-            replace(temp_file, old_target, new_target, buffer);
+            if (replace(temp_file, old_target, new_target, buffer) != 0)
+            {
+                fprintf(stderr, "Error writing replacement text\n");
+
+                free(buffer);
+                fclose(temp_file);
+
+                return -1;
+            }
             length = 0;
         }
         else
@@ -53,6 +61,7 @@ int replace_target(FILE *file, char *old_target, char *new_target)
                 {
                     perror("Failed to reallocate memory");
                     free(buffer);
+                    fclose(temp_file);
                     return -1;
                 }
 

@@ -16,6 +16,7 @@ int main(int argc, char **argv)
     if (argc < 2)
     {
         fprintf(stderr, "Usage: %s <filename> <command> <optional:flags>", argv[0]);
+        return 1;
     }
 
     const char *command = argv[2];
@@ -68,14 +69,29 @@ int main(int argc, char **argv)
 
     if (strcmp(command, "contains") == 0)
     {
-        int result = find_target_in_line(file, argv[3]);
-        printf("%d\n", result);
+        if (argc < 4)
+        {
+            fprintf(stderr, "Error: missing search word\n");
+            return 1;
+        }
+
+        find_target_in_line(file, argv[3]);
     }
 
     if (strcmp(command, "replace") == 0)
     {
-        if (argc >= 5)
-            replace_target(file, argv[3], argv[4]);
+        if (argc < 5)
+        {
+            fprintf(stderr, "Error: missing replacement arguments\n");
+            return 1;
+        }
+
+        if (replace_target(file, argv[3], argv[4]) != 0)
+        {
+            fprintf(stderr, "Replacement failed\n");
+            fclose(file);
+            return 1;
+        }
     }
 
     fclose(file);
