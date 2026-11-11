@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <ctype.h>
 
 #include "../include/count_chars.h"
 

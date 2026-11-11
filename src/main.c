@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -9,6 +8,7 @@
 #include "../include/count_longest_line.h"
 #include "../include/find_target_in_line.h"
 #include "../include/replace_target.h"
+#include "../include/frequency_word_count.h"
 
 int main(int argc, char **argv)
 {
@@ -92,6 +92,15 @@ int main(int argc, char **argv)
             fclose(file);
             return 1;
         }
+    }
+
+    if(strcmp(command, "frequency") == 0){
+
+      if(frequency_word_count(file) != 0){
+          fprintf(stderr, "Failed to calculate frequency");
+          fclose(file);
+          return 1;
+      }
     }
 
     fclose(file);
